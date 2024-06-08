@@ -23,11 +23,25 @@ class ContactForm extends StatelessWidget {
               decoration: const InputDecoration(labelText: 'Phone'),
             ),
             const Spacer(),
-            ElevatedButton(
-              onPressed: () {
-                contactsController.submitContact(context);
-              },
-              child: const Text('Submit'),
+            Row(
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    contactsController.submitContact(context);
+                  },
+                  child: const Text('Submit'),
+                ),
+                const SizedBox(width: 10,),
+                ElevatedButton(
+                  onPressed: () async{
+                   await contactsController.saveContactToSqlite(context);
+                   ScaffoldMessenger.of(context).showSnackBar(
+                     const SnackBar(content: Text('Save contact to local database')),
+                   );
+                  },
+                  child: const Text('Save to Local'),
+                ),
+              ],
             ),
           ],
         ),

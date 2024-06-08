@@ -4,17 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../models/contacts_model.dart';
+import '../../repository/local_repository/contact_local_repo.dart';
 import '../../repository/remote_repository/api_repository.dart';
 
 class ContactsController extends GetxController{
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final contacts = <Contact>[].obs;
+  final localDatabaseContactList = <Contact>[].obs;
   final _apiRepository=ApiRepository();
+  final _contactRepository=ContactRepository();
   @override
   void onInit() {
     super.onInit();
     fetchContacts();
+    fetchContactsFromSqlite();
   }
   @override
   void dispose() {
@@ -52,6 +56,28 @@ class ContactsController extends GetxController{
       print('Failed to fetch contacts: $e');
     }
   }
-
+ Future<void> saveContactToSqlite(context) async{
+    final name = nameController.text;
+    final phone = phoneController.text;
+    if(name.isEmpty && phone.isEmpty){
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Name or Phone may be empty')),
+      );
+    }else{
+      Contact contact=Contact(id: 1, name: name, phone: phone);
+      await _contactRepository.saveContact(contact);
+      Navigator.pop(context);
+      nameController.clear();
+      phoneController.clear();
+    }
+  }
+  Future<void> fetchContactsFromSqlite() async {
+    try {
+      final fetchedContacts = await _contactRepository.getContacts();
+      localDatabaseContactList.assignAll(fetchedContacts);
+    } catch (e) {
+      print('Failed to fetch contacts: $e');
+    }
+  }
 
 }

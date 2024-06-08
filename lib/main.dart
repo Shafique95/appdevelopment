@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'app/presentation/screens/contacts_list_screen.dart';
+import 'app/presentation/screens/home_screen.dart';
 
 void main() {
   runApp(
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:  ContactsListScreen(),
+      home:  const HomeScreen(),
     );
   }
 }

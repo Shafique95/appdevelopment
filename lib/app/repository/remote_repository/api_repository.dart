@@ -6,7 +6,7 @@ import 'package:http/http.dart';
 import '../../models/contacts_model.dart';
 
 class ApiRepository {
-  static const String _baseUrl = "http://192.168.43.71:3001";
+  static const String _baseUrl = "http://192.168.60.200:3001";
   var headers = {
     'Content-Type': 'application/json'
   };
